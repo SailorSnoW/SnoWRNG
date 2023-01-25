@@ -1,0 +1,65 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:SnoWRNG.ViewModels"
+             xmlns:conv="clr-namespace:SnoWRNG.Converter"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="225"
+             x:Class="SnoWRNG.Views.MainView"
+             Foreground="White"
+             Background="#171C2C">
+    
+    <UserControl.Resources>
+        <conv:PossibleMinValueConverter x:Key="PossibleMinValueConverter" /> 
+        <conv:PossibleMaxValueConverter x:Key="PossibleMaxValueConverter" />
+    </UserControl.Resources>
+    
+    <Design.DataContext>
+    <!-- This only sets the DataContext for the previewer in an IDE,
+         to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+    <viewModels:MainViewModel />
+  </Design.DataContext>
+  
+    <StackPanel Margin="20">
+      
+      <StackPanel Margin="20">
+          <TextBlock Text="Minimum"></TextBlock>
+          <NumericUpDown 
+              Value="{Binding Min}"
+              Maximum="{
+              Binding Max, 
+              Converter={StaticResource PossibleMinValueConverter}
+              }"
+              ParsingNumberStyle="Integer">
+              
+          </NumericUpDown>
+      </StackPanel>
+      <StackPanel Margin="20">
+          <TextBlock Text="Maximum"></TextBlock>
+          <NumericUpDown 
+              Value="{Binding Max}" 
+              Minimum="{
+              Binding Min,
+              Converter={StaticResource PossibleMaxValueConverter}
+              }"
+              ParsingNumberStyle="Integer">
+              
+          </NumericUpDown>
+      </StackPanel>
+      
+      <Button 
+          Name="ButtonGenerate"
+          HorizontalAlignment="Center"
+          Command="{Binding GenerateAndStore}">
+          Generate !
+      </Button>
+        
+        <TextBlock 
+            Margin="10"
+            Text="{Binding _history.LastResult.Number, FallbackValue=''}"
+            IsVisible="{Binding _history.LastResult, Converter={x:Static ObjectConverters.IsNotNull}}"
+            HorizontalAlignment="Center">
+            
+        </TextBlock>
+    </StackPanel>
+</UserControl>
