@@ -1,38 +1,25 @@
 ﻿using System;
-using ReactiveUI;
+using System.Security.Cryptography;
 using SnoWRNG.Utils;
+using Range = SnoWRNG.Utils.Range;
 
 namespace SnoWRNG.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
-    private RandomResults _history { get; } = new();
-    private int _min;
-    private int _max = 1;
-
-    public int Min
-    {
-        get => _min;
-        set => this.RaiseAndSetIfChanged(ref _min, value);
-    }
-    public int Max
-    {
-        get => _max;
-        set => this.RaiseAndSetIfChanged(ref _max, value);
-    }
+    private RandomResults History { get; } = new();
+    private Range Range { get; } = new(0, 1);
 
     public void GenerateAndStore()
     {
         var randomNumber = GenerateInRange();
 
-        var result = new RandomResult(randomNumber, _min, _max);
-        _history.Add(result);
+        var result = new RandomResult(randomNumber, Range.Min, Range.Max);
+        History.Add(result);
     }
     
     private int GenerateInRange()
     {
-        var rand = new Random();
-
-        return rand.Next(_min, _max + 1); // +1 cause max is exclusive
+        return RandomNumberGenerator.GetInt32(Range.Min, Range.Max + 1); // +1 cause max is exclusive
     }
 }

@@ -20,46 +20,58 @@
     <viewModels:MainViewModel />
   </Design.DataContext>
   
-    <StackPanel Margin="20">
+    <StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
       
-      <StackPanel Margin="20">
-          <TextBlock Text="Minimum"></TextBlock>
-          <NumericUpDown 
-              Value="{Binding Min}"
-              Maximum="{
-              Binding Max, 
+            <StackPanel Margin="20">
+                <TextBlock HorizontalAlignment="Center" Text="Minimum"></TextBlock>
+                <NumericUpDown 
+                    Width="150"
+                    ButtonSpinnerLocation="Left"
+                    Value="{Binding Range.Min}"
+                    Maximum="{
+              Binding Range.Max, 
               Converter={StaticResource PossibleMinValueConverter}
               }"
-              ParsingNumberStyle="Integer">
+                    ParsingNumberStyle="Integer">
               
-          </NumericUpDown>
-      </StackPanel>
-      <StackPanel Margin="20">
-          <TextBlock Text="Maximum"></TextBlock>
-          <NumericUpDown 
-              Value="{Binding Max}" 
-              Minimum="{
-              Binding Min,
+                </NumericUpDown>
+            </StackPanel>
+            <StackPanel Margin="20">
+                <TextBlock HorizontalAlignment="Center" Text="Maximum"></TextBlock>
+                <NumericUpDown 
+                    Width="150"
+                    Value="{Binding Range.Max}" 
+                    Minimum="{
+              Binding Range.Min,
               Converter={StaticResource PossibleMaxValueConverter}
               }"
-              ParsingNumberStyle="Integer">
+                    ParsingNumberStyle="Integer">
               
-          </NumericUpDown>
-      </StackPanel>
-      
-      <Button 
-          Name="ButtonGenerate"
-          HorizontalAlignment="Center"
-          Command="{Binding GenerateAndStore}">
-          Generate !
-      </Button>
+                </NumericUpDown>
+            </StackPanel>
+            
+        </StackPanel>
+        
+        <Button 
+            Name="ButtonGenerate"
+            HorizontalAlignment="Center"
+            Command="{Binding GenerateAndStore}">
+            Generate !
+        </Button>
+        
+        <Separator></Separator>
         
         <TextBlock 
             Margin="10"
-            Text="{Binding _history.LastResult.Number, FallbackValue=''}"
-            IsVisible="{Binding _history.LastResult, Converter={x:Static ObjectConverters.IsNotNull}}"
+            Text="{
+            Binding  History.LastResult.Serialized, 
+            FallbackValue=''
+            }"
+            IsVisible="{Binding History.LastResult, Converter={x:Static ObjectConverters.IsNotNull}}"
             HorizontalAlignment="Center">
             
         </TextBlock>
+        
     </StackPanel>
 </UserControl>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace SnoWRNG.Utils;
 
@@ -20,5 +21,14 @@ public class RandomResult
         Number = n;
         Range = new Range(min, max);
         Date = DateTime.Now;
+    }
+
+    public string Serialized => ToString();
+    
+    public override string ToString()
+    {
+        return $"Number {Number} was generated the " +
+               $"{Date.ToString(new CultureInfo("en-US"))}. \n" +
+               $"(Range: {Range})";
     }
 }
